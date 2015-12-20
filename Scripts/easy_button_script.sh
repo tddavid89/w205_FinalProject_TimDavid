@@ -28,6 +28,18 @@ sudo -u w205 hdfs dfs -put /data/w205_test.csv /user/w205/w205final/date=2015_04
 # add partition to hive table
 hive -e "ALTER TABLE gameday_base_table ADD PARTITION(date='2015_04_05');"
 
+# Pull postgres sql script off of github
+wget https://raw.githubusercontent.com/tddavid89/w205_FinalProject_TimDavid/master/Scripts/create__gameday_base_table.sql
+
+# create postgres database 'gameday'
+createdb -U postgres gameday
+
+# create postgres table 'gameday_base_table'
+psql -U postgres \gameday -f create__postgres_gameday_table.sql
+
+# use sqoop to transfer hive table to postgres
+sqoop export --connect jdbc:postgresql://localhost:5432/gameday --username postgres --table gameday_base_table --export-dir /user/w205/w205final/* ;
+
 # make directory to dump csv file
 mkdir /data/csvDump
 
