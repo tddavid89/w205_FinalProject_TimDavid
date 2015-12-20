@@ -17,14 +17,30 @@ In order to address this problem I extracted MLB Advanced Media - Gameday Data f
 
 The following are instructions for running the code necessary for my final project.
 
-If you would like to see all of the code executed as a video, please click the link to the video walkthrough below, otherwise, please continue to the "**_Log On Information_**" portion of this readme file.
-
 ---
+### **NOTES PRIOR TO WALKING THROUGH CODE:**
+
+> If, instead, you would like to run the entire script as a shell script, please execute the following commands as **_root_** once you have completed **Step 0**:
+
+```
+wget https://raw.githubusercontent.com/tddavid89/w205_FinalProject_TimDavid/master/Scripts/easy_button_script.sh
+
+chmod 777 ./easy_button_script.sh
+
+./easy_button_script.sh
+```
+
+
+> If you would like to see all of the code executed as a video, please click the link to the video walkthrough below, otherwise, please continue to the "**_Log On Information_**" portion of this readme file.
+
+
 ### **Video Code Walkthrough**:
 
 [![Video Code Walkthrough](http://img.youtube.com/vi/Kv5mWxu1fTo/0.jpg)](https://www.youtube.com/watch?v=Kv5mWxu1fTo "Everything Is AWESOME")
 
 ---
+
+## **Code Walkthrough**:
 
 ### **Step 0: Log On Information**:
 
