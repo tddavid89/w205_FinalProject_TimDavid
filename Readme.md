@@ -282,9 +282,102 @@ When we have run all of these scripts, navigate back to the **_root_** user:
 exit
 ```
 
---------------------------------------------------------------------------------
+-----------------------------------------------------------------------------
 
-## Step 3: Extract CSV Data For Visualization
+
+## Step 3a: Export Data To Postgres
+
+First we need to connect to postgres as user postgres:
+
+```
+psql -U postgres
+```
+
+Next, let's make a database named **_gameday_**:
+
+```
+CREATE DATABASE gameday;
+```
+
+Once the database is created, let's connect:
+
+```
+\c gameday
+```
+
+Under gameday, create a table named **_gameday\_base\_table_**:
+
+```
+CREATE TABLE gameday_base_table(
+  b text,
+  s text,
+  o text,
+  stand text,
+  b_height text,
+  p_throws text,
+  atbat_des text,
+  event_num text,
+  event text,
+  home_team_runs text,
+  away_team_runs text,
+  inning_side text,
+  inning text,
+  batter_name text,
+  pitcher_name text,
+  date_1 text,
+  des text,
+  id text,
+  type_bsx text,
+  x text,
+  y text,
+  start_speed text,
+  end_speed text,
+  sz_top text,
+  sz_bot text,
+  pfx_x text,
+  pfx_z text,
+  px text,
+  pz text,
+  x0 text,
+  y0 text,
+  z0 text,
+  vx0 text,
+  vy0 text,
+  vz0 text,
+  ax text,
+  ay text,
+  az text,
+  break_y text,
+  break_angle text,
+  break_length text,
+  pitch_type text,
+  type_confidence text,
+  zone text,
+  nasty text,
+  spin_dir text,
+  spin_rate text,
+  on_2b text,
+  on_1b text,
+  on_3b text,
+  date text
+);
+```
+
+Quit Postgres:
+
+```
+\q
+```
+
+Now that we have a table in postgres, export data from the Hive table (**_gameday\_base\_table_**) to the postgres table (**_gameday\_base\_table_**) using **_sqoop_** :
+
+```
+sqoop export --connect jdbc:postgresql://localhost:5432/gameday --username postgres --table gameday_base_table --export-dir /user/w205/w205final/* ;
+```
+
+---
+
+## Step 3b: Extract CSV Data For Visualization
 
 ```
 # LOG IN AS USER W205
