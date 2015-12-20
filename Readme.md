@@ -602,4 +602,31 @@ hive --service hiveserver2
 
 ### **Limitations**:
 
-While this solution works well, it could be better. I have only tested this method with one season's worth of data, but I need a better solution for scaling. I have explored using sqoop to transfer data directly from my Hive table to Postgres. This may be a better long term solution.
+- Dataset
+	- MLB AM Gameday data only became available for all games in 2005
+	- Not all stadiums have the most up to date equipment to measure the latest statistics
+
+
+- User Expectations
+	- In its current state, users still must know some level of programming in order to do analysis and create graphs other the ones provided (R, Python, etc.)
+
+
+- Scaling
+	- As more seasons and extra data sources get added, csv method may not be feasible
+	- Postgres will become more important as Hive will become much slower with more data
+
+
+
+### ***Future Developments***:
+- Add in other data sources
+	- admission / attendance 
+	- player salaries
+	- coaches / umpires / other personnel
+	- statcast data as it becomes available
+
+
+- More interactivity
+	- allowing users to select items from dropdown menus or dynamically search
+
+
+- Ultimately, a one-stop-shop for advanced baseball statistics
