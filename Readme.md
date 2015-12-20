@@ -3,6 +3,33 @@
 
 --------------------------------------------------------------------------------
 
+The following are instructions for running the code necessary for my final project.
+
+If you would like to see all of the code executed as a video, please click the link to the video walkthrough below, otherwise, please continue to the "**_Log On Information_**" portion of this readme file.
+
+---
+### **Video Code Walkthrough**:
+
+[![Video Code Walkthrough](http://img.youtube.com/vi/Kv5mWxu1fTo/0.jpg)](https://www.youtube.com/watch?v=Kv5mWxu1fTo "Everything Is AWESOME")
+
+---
+
+### **Log On Information**:
+
+**AMI**:  w205_finalproject_TimDavid_1.0
+
+
+|      PORT     | DESCRIPTION                                                                                                                       |
+|:---------------:|------------|
+| 4040 | Spark |
+| 50070 | Hadoop |
+| 8080 | Webserver |
+| 5432 | Postgres|
+| 22 | SSH |
+| 8787 | RStudio |
+| 3838 | Shiny |
+| 8088 | Zeppelin |
+| 10000 |   |
 
 
 ### **Step 1: Create Essential Files and Folders**
@@ -113,7 +140,7 @@ cd /data
 emacs pitchRx_main.R
 ```
 
-_Copy and paste the following code as input_:
+_Copy and paste the following code as input_: 
 
 ```
 ##########################
@@ -347,10 +374,10 @@ First sample R plot, shows location of all pitches thrown in the given time fram
 ```
 %spark.r
 
-ggplot(subset(dt,batter_name == "Robinson Cano"),aes(px,pz,color=type_bsx)) +
-    geom_point(aes(shape=pitch_type)) +
-    coord_equal() +
-    geom_path(aes(x,y), data = kZone, lwd = 1, col = "black", alpha = 0.75) +
+ggplot(subset(dt,batter_name == "Robinson Cano"),aes(px,pz,color=type_bsx)) + 
+    geom_point(aes(shape=pitch_type)) + 
+    coord_equal() + 
+    geom_path(aes(x,y), data = kZone, lwd = 1, col = "black", alpha = 0.75) + 
     xlab("Horizontal Pitch Location") + ylab("Height From Ground")
 ```
 
@@ -367,10 +394,10 @@ The second sample plot shows the same as the first, except this time, there is a
 # SHAPES SPLIT BY:
 #   PITCH_TYPE
 
-ggplot(dt,aes(px,pz,color=type_bsx)) +
-    geom_point(aes(shape=pitch_type)) +
-    facet_wrap(~ pitch_type) +
-    coord_equal() +
+ggplot(dt,aes(px,pz,color=type_bsx)) + 
+    geom_point(aes(shape=pitch_type)) + 
+    facet_wrap(~ pitch_type) + 
+    coord_equal() + 
     geom_path(aes(x,y), data = kZone, lwd = 1, col = "black", alpha = 0.75) +
     xlab("Horizontal Pitch Location") + ylab("Height From Ground")
 ```
@@ -383,7 +410,7 @@ The third sample plot is a contour map of all of the pitches thrown to a particu
 rCano <- subset(dt, pitch_type %in% c("FF","FC","FS","FT","CH","CU","KN","SI","SL"))
 
 strikeFX(rCano, color = "pitch_type", point.alpha = 0.2,
-         adjust = TRUE, contour = TRUE) + facet_grid(. ~ p_throws) +
+         adjust = TRUE, contour = TRUE) + facet_grid(. ~ p_throws) + 
   theme(legend.position = "right", legend.direction = "vertical") +
   coord_equal() + theme_bw()
 ```
@@ -397,3 +424,66 @@ fHernandez <- dt
 
 ggplot(data=fHernandez, aes(factor(inning), end_speed)) + geom_boxplot(outlier.size = 0) + geom_jitter(color='blue',size=0.05) + xlim("1","2","3","4","5","6","7","8","9") + xlab("Inning") + ylab("Pitch Speed (MPH)")
 ```
+
+---
+
+### **_For Reference When Creating Your Own Plots_**:
+
+
+_Here are the definitions of each column header, and a short description_:
+
+
+|      COLUMN     | DESCRIPTION                                                                                                                       |
+|:---------------:|-----------------------------------------------------------------------------------------------------------------------------------|
+|        b        | # of balls in count                                                                                                               |
+|        s        | # of strikes in count                                                                                                             |
+|        o        | # of outs in inning                                                                                                               |
+|      stand      | whether batter is left handed or right handed                                                                                     |
+|     b_height    | height of the batter                                                                                                              |
+|     p_throws    | whether the pitcher is left handed or right handed                                                                                |
+|    atbat_des    | summary of the result of the at bat                                                                                               |
+|    event_num    | number corresponding to the type of the result of the at bat                                                                      |
+|      event      | categorization of result of the at bat (correlates to event_num)                                                                  |
+|  home_team_runs | how many runs the home team had at the time of the at bat                                                                         |
+|  away_team_runs | how many runs the away team had at the time of the at bat                                                                         |
+|   inning_side   | whether it was the top or the bottom of the inning                                                                                |
+|      inning     | what inning it was in the game                                                                                                    |
+|   batter_name   | name of the batter                                                                                                                |
+|   pitcher_name  | name of the pitcher                                                                                                               |
+|      date_1     | date of the event (YYYY_MM_DD)                                                                                                    |
+|       des       | categorization of the result of the pitch                                                                                         |
+|        id       | unique id for individual pitch within an individual game                                                                          |
+|     type_bsx    | whether the result of the pitch as a ball (B), strike (S), or ball in play (X)                                                    |
+|        x        | x location of the batted ball in feet                                                                                             |
+|        y        | y location of the batted ball in feet                                                                                             |
+|   start_speed   | initial velocity of the pitch when released from the pitcher's hand (MPH)                                                         |
+|    end_speed    | velocity of the pitch when it crosses home plate (MPH) - Number commonly read on radar guns                                       |
+|      sz_top     | top-most height of the strikezone in feet for the given batter (measured from ground)                                             |
+|      sz_bot     | bottom-most height of the strikezone in feet for the given batter (measured from ground)                                          |
+|      pfx_x      | horizontal movement of the pitch in inches                                                                                        |
+|      pfx_z      | vertical movement of the pitch in inches                                                                                          |
+|        px       | horizontal distance of the pitch from the center of the plate in inches                                                           |
+|        pz       | vertical distance of the pitch from the center of the plate in inches                                                             |
+|        x0       | vertical distance from the center of the plate, in feet, where the pitch was released                                             |
+|        y0       | distance, in feet, from home plate where pitchFx system begins to take initial measurements                                       |
+|        z0       | the height, in feet, at which the pitch was released                                                                              |
+|       vx0       | the velocity of the pitch in the x direction, in feet per second                                                                  |
+|       vy0       | the velocity of the pitch in the y direction, in feet per second                                                                  |
+|       vz0       | the velocity of the pitch in the z direction, in feet per second                                                                  |
+|        ax       | the acceleration of the pitch in the x direction, in feet per second per second                                                   |
+|        ay       | the acceleration of the pitch in the y direction, in feet per second per second                                                   |
+|        az       | the acceleration of the pitch in the z direction, in feet per second per second                                                   |
+|     break_y     | the distance, in feet, from home plate where pitch achieved its greatest deviation from a straight line                           |
+|   break_angle   | the angle, in degrees, from a direct vertical line to the location of the pitch when it crossed home plate                        |
+|   break_length  | the distance, in inches, of the deviation of a straight line from the release point to the front of home plate to the actual path |
+|    pitch_type   | what type the pitch has been classified as (determined by MLB AM algorithm)                                                       |
+| type_confidence | how confident the algorithm was in determining pitch_type (0-1)                                                                   |
+|       zone      | which bucketed location the pitch fell into (e.g. within strike zone up and in, outside of zone low and out, etc.)                |
+|      nasty      | how difficult this particular pitch was to hit (0-100)                                                                            |
+|     spin_dir    | the direction of the spin on the ball                                                                                             |
+|    spin_rate    | the rate of the spin of the pitch, in rpm (rotations per minute)                                                                  |
+|      on_2b      | playerID of the runner on second base, if there is one present                                                                    |
+|      on_1b      | playerID of the runner on first base, if there is one present                                                                     |
+|      on_3b      | playerID of the runner on third base, if there is one present                                                                     |
+|      count      | the count (<# of balls> - <# of strikes>) of the at bat prior to the pitch being thrown                                           |
+|       date      | the current date (YYYY_MM_DD)                                                                                                     |
