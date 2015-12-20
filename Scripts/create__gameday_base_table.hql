@@ -50,8 +50,7 @@ CREATE EXTERNAL TABLE gameday_base_table(
   spin_rate String,
   on_2b String,
   on_1b String,
-  on_3b String,
-  count String
+  on_3b String
 )
 PARTITIONED BY (date String)
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'

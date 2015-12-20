@@ -60,7 +60,7 @@ pitcher <- join(pitcher_atbats, dat.pitch, by = c("num", "url"), type="inner")
 
 #DROP IRRELEVANT COLUMN
 
-keeps <- c('b','s','o','stand','b_height','p_throws','atbat_des','event_num','event','home_team_runs','away_team_runs','inning_side','inning','batter_name','pitcher_name','date','des','id','type_bsx','x','y','start_speed','end_speed','sz_top','sz_bot','pfx_x','pfx_z','px','pz','x0','y0','z0','vx0','vy0','vz0','ax','ay','az','break_y','break_angle','break_length','pitch_type','type_confidence','zone','nasty','spin_dir','spin_rate','on_1b','on_2b','on_3b','count')
+keeps <- c('b','s','o','stand','b_height','p_throws','atbat_des','event_num','event','home_team_runs','away_team_runs','inning_side','inning','batter_name','pitcher_name','date','des','id','type_bsx','x','y','start_speed','end_speed','sz_top','sz_bot','pfx_x','pfx_z','px','pz','x0','y0','z0','vx0','vy0','vz0','ax','ay','az','break_y','break_angle','break_length','pitch_type','type_confidence','zone','nasty','spin_dir','spin_rate','on_1b','on_2b','on_3b')
 pitcher <- pitcher[,(names(pitcher) %in% keeps)]
 
 pitcher$inning_side.1 <- NULL
