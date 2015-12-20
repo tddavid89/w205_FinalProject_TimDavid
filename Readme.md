@@ -28,7 +28,12 @@ If you would like to see all of the code executed as a video, please click the l
 
 ### **Step 0: Log On Information**:
 
-**AMI**:  w205_finalproject_TimDavid_1.0
+**AMI**:  w205\_finalproject\_TimDavid\_1.0
+
+**AMI ID**: ami-09d48163
+
+![ami](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/ami_image.png?raw=true)
+
 
 **SECURITY/PORTS**:
 
