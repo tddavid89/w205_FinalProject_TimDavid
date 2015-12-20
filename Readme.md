@@ -146,8 +146,7 @@ CREATE EXTERNAL TABLE gameday_base_table(
   spin_rate String,
   on_2b String,
   on_1b String,
-  on_3b String,
-  count String
+  on_3b String
 )
 PARTITIONED BY (date String)
 ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
@@ -223,7 +222,7 @@ names(dat.pitch)[names(dat.pitch) == "type"] <- "type_bsx"
 pitcher <- join(pitcher_atbats, dat.pitch, by = c("num", "url"), type="inner")
 
 #DROP IRRELEVANT COLUMNS
-keeps <- c('b','s','o','stand','b_height','p_throws','atbat_des','event_num','event','home_team_runs','away_team_runs','inning_side','inning','batter_name','pitcher_name','date','des','id','type_bsx','x','y','start_speed','end_speed','sz_top','sz_bot','pfx_x','pfx_z','px','pz','x0','y0','z0','vx0','vy0','vz0','ax','ay','az','break_y','break_angle','break_length','pitch_type','type_confidence','zone','nasty','spin_dir','spin_rate','on_1b','on_2b','on_3b','count')
+keeps <- c('b','s','o','stand','b_height','p_throws','atbat_des','event_num','event','home_team_runs','away_team_runs','inning_side','inning','batter_name','pitcher_name','date','des','id','type_bsx','x','y','start_speed','end_speed','sz_top','sz_bot','pfx_x','pfx_z','px','pz','x0','y0','z0','vx0','vy0','vz0','ax','ay','az','break_y','break_angle','break_length','pitch_type','type_confidence','zone','nasty','spin_dir','spin_rate','on_1b','on_2b','on_3b')
 
 pitcher <- pitcher[,(names(pitcher) %in% keeps)]
 
