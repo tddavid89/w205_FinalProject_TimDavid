@@ -1,8 +1,8 @@
 # log on to w205
-su - w205
+#su - w205
 
 # make hdfs directory
-hdfs dfs -mkdir /user/w205/w205final
+sudo -u w205 hdfs dfs -mkdir /user/w205/w205final
 
 # get hql file from github
 wget https://raw.githubusercontent.com/tddavid89/w205_FinalProject_TimDavid/master/Scripts/create__gameday_base_table.hql
@@ -16,23 +16,14 @@ cd /data
 # extract pitchRx_main.R script
 wget https://raw.githubusercontent.com/tddavid89/w205_FinalProject_TimDavid/master/Scripts/pitchRx_main.R
 
-# exit w205 and move to root
-exit
-
-#cd to /data folder
-cd /data
-
 # run R script
 Rscript pitchRx_main.R "2015-04-05"
 
-# log back on to w205
-su - w205
-
 # make directory in hdfs for partition
-hdfs dfs -mkdir /user/w205/w205final/date=2015_04_05
+sudo -u w205 hdfs dfs -mkdir /user/w205/w205final/date=2015_04_05
 
 # put csv file into hdfs directory
-hdfs dfs -put /data/w205_test.csv /user/w205/w205final/date=2015_04_05
+sudo -u w205 hdfs dfs -put /data/w205_test.csv /user/w205/w205final/date=2015_04_05
 
 # add partition to hive table
 hive -e "ALTER TABLE gameday_base_table ADD PARTITION(date='2015_04_05');"
@@ -43,11 +34,14 @@ mkdir /data/csvDump
 # move files from hive to csv
 hive -e "SELECT * FROM gameday_base_table" > /data/csvDump/temp.csv
 
+#cd /data
+cd /data
+
 # Clone GitHub that contains R interpreter
 git clone https://github.com/elbamos/Zeppelin-With-R.git incubator-zeppelin-rinterpreter
 
 # cd into repository you just cloned
-cd incubator-zeppelin-rinterpreter
+cd /data/incubator-zeppelin-rinterpreter
 
 # Install Apache Maven 3.3.3
 wget -O /data/apache-maven-3.3.3-bin.tar.gz http://www.trieuvan.com/apache/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
@@ -57,6 +51,9 @@ cd /data/ && sudo -u w205 tar xvzf /data/apache-maven-3.3.3-bin.tar.gz
 export M2_HOME=/usr/local/apache-maven-3.3.3
 export M2=$M2_HOME/bin
 export PATH=$M2:$PATH
+
+# cd into zeppelin repository you just cloned
+cd /data/incubator-zeppelin-rinterpreter
 
 # RUN FOLLOWING COMMAND TO (RE)BUILD INTERPRETER ITEMS
 mvn clean package -DskipTests
