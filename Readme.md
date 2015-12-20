@@ -7,11 +7,11 @@
 
 The following is code intended to solve the following problem:
 
-	- Advanced baseball statistics are not easily accessible today, but the demand for such statistics is dramatically increasing
+> Advanced baseball statistics are not easily accessible today, but the demand for such statistics is dramatically increasing
 
 In order to address this problem I extracted MLB Advanced Media - Gameday Data from the MLB website using R. Once the data was extracted and converted into CSV format, the file was then loaded into a partitioned Hive table. When a user wants to analyze the data stored in the Hive table, it is then extracted to a local file as a CSV. From there, a user can connect to this CSV from Apache Zeppelin and analyze the data using R ( **_%spark.r_** ), Python ( **_%pyspark_** ), or HiveQL ( **_%hive_** ).
 
-![architecture](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/architecture.png?raw=true)
+![architecture](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/architechture.png?raw=true)
 
 
 
@@ -26,7 +26,7 @@ If you would like to see all of the code executed as a video, please click the l
 
 ---
 
-### **Log On Information**:
+### **Step 0: Log On Information**:
 
 **AMI**:  w205_finalproject_TimDavid_1.0
 
@@ -385,7 +385,7 @@ kZone <- data.frame(
 
 **_R Plot_**:
 
-First sample R plot, shows location of all pitches thrown in the given time frame. The color is split by the result of the pitch (Ball (B), Strike (S), Batted Ball (X)), and the shapes are split by pitch type:
+First sample R plot, shows location of all pitches thrown in the given time frame. The color is split by the result of the pitch ( Ball (B), Strike (S), Batted Ball (X) ), and the shapes are split by pitch type:
 
 ```
 %spark.r
@@ -474,7 +474,7 @@ _Here are the definitions of each column header, and a short description_:
 |      inning     | what inning it was in the game                                                                                                    |
 |   batter\_name   | name of the batter                                                                                                                |
 |   pitcher\_name  | name of the pitcher                                                                                                               |
-|      date\_1     | date of the event (YYYY_MM_DD)                                                                                                    |
+|      date\_1     | date of the event (YYYY\_MM\_DD)                                                                                                    |
 |       des       | categorization of the result of the pitch                                                                                         |
 |        id       | unique id for individual pitch within an individual game                                                                          |
 |     type_bsx    | whether the result of the pitch as a ball (B), strike (S), or ball in play (X)                                                    |
@@ -510,13 +510,14 @@ _Here are the definitions of each column header, and a short description_:
 |      on\_1b      | playerID of the runner on first base, if there is one present                                                                     |
 |      on\_3b      | playerID of the runner on third base, if there is one present                                                                     |
 |      count      | the count (<# of balls> - <# of strikes>) of the at bat prior to the pitch being thrown                                           |
-|       date      | the current date (YYYY_MM_DD)                                                                                                     |
+|       date      | the current date (YYYY\_MM\_DD)                                                                                                     |
 
 
 ---
 
 ### Step 5: Final Notebook
 
+_click to expand images_:
 
 ![final_notebook_01](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_01.png?raw=true)
 
@@ -554,13 +555,13 @@ Rscript pitchRx_main.R "<year>_<month>_<day>"
 su - w205
 
 # Make partition folder in hdfs for given day:
-hdfs dfs -mkdir /user/w205/w205final/date=2015_04_05
+hdfs dfs -mkdir /user/w205/w205final/date=<year>_<month>_<day>
 
 # Move w205_test.csv to partition folder in hdfs:
-hdfs dfs -put /data/w205_test.csv /user/w205/w205final/date=2015_04_05
+hdfs dfs -put /data/w205_test.csv /user/w205/w205final/date=<year>_<month>_<day>
 
 # Add new partition to Hive
-hive -e "ALTER TABLE gameday_base_table ADD PARTITION(date='2015_04_05');"
+hive -e "ALTER TABLE gameday_base_table ADD PARTITION(date='<year>_<month>_<day>');"
 ```
 
 And then when the user would like to analyze data, all they would have to do is dump the Hive table to the local folder and start Zeppelin:
