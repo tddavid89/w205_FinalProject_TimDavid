@@ -1,0 +1,11 @@
+su - w205;
+cd /data;
+exit;
+cd /data;
+Rscript pitchRx_main.R "2015-10-01";
+su - w205;
+hdfs dfs -mkdir /user/w205/w205final/date=2015_10_01;
+hdfs dfs -put /data/w205_test.csv /user/w205/w205final/date=2015_10_01;
+hive -e "ALTER TABLE gameday_base_table ADD PARTITION(date='2015_10_01');";
+rm -f /data/w205_test.csv;
+exit;
