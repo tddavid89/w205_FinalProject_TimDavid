@@ -3,6 +3,18 @@
 
 --------------------------------------------------------------------------------
 
+### **Introduction**:
+
+The following is code intended to solve the following problem:
+
+	- Advanced baseball statistics are not easily accessible today, but the demand for such statistics is dramatically increasing
+
+In order to address this problem I extracted MLB Advanced Media - Gameday Data from the MLB website using R. Once the data was extracted and converted into CSV format, the file was then loaded into a partitioned Hive table. When a user wants to analyze the data stored in the Hive table, it is then extracted to a local file as a CSV. From there, a user can connect to this CSV from Apache Zeppelin and analyze the data using R ( **_%spark.r_** ), Python ( **_%pyspark_** ), or HiveQL ( **_%hive_** ).
+
+![architecture](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/architecture.png?raw=true)
+
+
+
 The following are instructions for running the code necessary for my final project.
 
 If you would like to see all of the code executed as a video, please click the link to the video walkthrough below, otherwise, please continue to the "**_Log On Information_**" portion of this readme file.
@@ -18,6 +30,8 @@ If you would like to see all of the code executed as a video, please click the l
 
 **AMI**:  w205_finalproject_TimDavid_1.0
 
+**SECURITY/PORTS**:
+
 
 |      PORT     | DESCRIPTION                                                                                                                       |
 |:---------------:|------------|
@@ -30,6 +44,8 @@ If you would like to see all of the code executed as a video, please click the l
 | 3838 | Shiny |
 | 8088 | Zeppelin |
 | 10000 |   |
+
+[![Security and Ports](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/EC2_Management_Console.png?raw=true)](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/EC2_Management_Console.png?raw=true)
 
 
 ### **Step 1: Create Essential Files and Folders**
@@ -54,7 +70,7 @@ hdfs dfs -mkdir /user/w205/w205final
 hive
 ```
 
-_Create_ "**_gameday_base_table_**" , _partitioned by date (day)_:
+_Create_ "**_gameday\_base\_table_**" , _partitioned by date (day)_:
 
 ```
 DROP TABLE IF EXISTS gameday_base_table;
@@ -381,6 +397,8 @@ ggplot(subset(dt,batter_name == "Robinson Cano"),aes(px,pz,color=type_bsx)) +
     xlab("Horizontal Pitch Location") + ylab("Height From Ground")
 ```
 
+![Sample R Script 1](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/Sample_R_Plot_01.png?raw=true)
+
 The second sample plot shows the same as the first, except this time, there is an individual plot for each pitch type (i.e. CH, CU, FC, FF, FT, IN, SI, SL, etc.):
 
 ```
@@ -402,6 +420,8 @@ ggplot(dt,aes(px,pz,color=type_bsx)) +
     xlab("Horizontal Pitch Location") + ylab("Height From Ground")
 ```
 
+![Sample R Script 2](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/Sample_R_Plot_02.png?raw=true)
+
 The third sample plot is a contour map of all of the pitches thrown to a particular batter. The graph is split by which hand the pitcher throws with ( L or R ):
 
 ```
@@ -415,6 +435,8 @@ strikeFX(rCano, color = "pitch_type", point.alpha = 0.2,
   coord_equal() + theme_bw()
 ```
 
+![Sample R Script 3](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/Sample_R_Plot_03.png?raw=true)
+
 The final R sample plot shows box and whisker plots of the velocity of each pitch grouped by each inning of the game:
 
 ```
@@ -425,9 +447,11 @@ fHernandez <- dt
 ggplot(data=fHernandez, aes(factor(inning), end_speed)) + geom_boxplot(outlier.size = 0) + geom_jitter(color='blue',size=0.05) + xlim("1","2","3","4","5","6","7","8","9") + xlab("Inning") + ylab("Pitch Speed (MPH)")
 ```
 
+![Sample R Script 4](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/Sample_R_Script_04.png?raw=true)
+
 ---
 
-### **_For Reference When Creating Your Own Plots_**:
+##### **_For Reference When Creating Your Own Plots_**:
 
 
 _Here are the definitions of each column header, and a short description_:
@@ -439,29 +463,29 @@ _Here are the definitions of each column header, and a short description_:
 |        s        | # of strikes in count                                                                                                             |
 |        o        | # of outs in inning                                                                                                               |
 |      stand      | whether batter is left handed or right handed                                                                                     |
-|     b_height    | height of the batter                                                                                                              |
-|     p_throws    | whether the pitcher is left handed or right handed                                                                                |
-|    atbat_des    | summary of the result of the at bat                                                                                               |
-|    event_num    | number corresponding to the type of the result of the at bat                                                                      |
+|     b\_height    | height of the batter                                                                                                              |
+|     p\_throws    | whether the pitcher is left handed or right handed                                                                                |
+|    atbat\_des    | summary of the result of the at bat                                                                                               |
+|    event\_num    | number corresponding to the type of the result of the at bat                                                                      |
 |      event      | categorization of result of the at bat (correlates to event_num)                                                                  |
-|  home_team_runs | how many runs the home team had at the time of the at bat                                                                         |
-|  away_team_runs | how many runs the away team had at the time of the at bat                                                                         |
-|   inning_side   | whether it was the top or the bottom of the inning                                                                                |
+|  home\_team\_runs | how many runs the home team had at the time of the at bat                                                                         |
+|  away\_team\_runs | how many runs the away team had at the time of the at bat                                                                         |
+|   inning\_side   | whether it was the top or the bottom of the inning                                                                                |
 |      inning     | what inning it was in the game                                                                                                    |
-|   batter_name   | name of the batter                                                                                                                |
-|   pitcher_name  | name of the pitcher                                                                                                               |
-|      date_1     | date of the event (YYYY_MM_DD)                                                                                                    |
+|   batter\_name   | name of the batter                                                                                                                |
+|   pitcher\_name  | name of the pitcher                                                                                                               |
+|      date\_1     | date of the event (YYYY_MM_DD)                                                                                                    |
 |       des       | categorization of the result of the pitch                                                                                         |
 |        id       | unique id for individual pitch within an individual game                                                                          |
 |     type_bsx    | whether the result of the pitch as a ball (B), strike (S), or ball in play (X)                                                    |
 |        x        | x location of the batted ball in feet                                                                                             |
 |        y        | y location of the batted ball in feet                                                                                             |
-|   start_speed   | initial velocity of the pitch when released from the pitcher's hand (MPH)                                                         |
-|    end_speed    | velocity of the pitch when it crosses home plate (MPH) - Number commonly read on radar guns                                       |
-|      sz_top     | top-most height of the strikezone in feet for the given batter (measured from ground)                                             |
-|      sz_bot     | bottom-most height of the strikezone in feet for the given batter (measured from ground)                                          |
-|      pfx_x      | horizontal movement of the pitch in inches                                                                                        |
-|      pfx_z      | vertical movement of the pitch in inches                                                                                          |
+|   start\_speed   | initial velocity of the pitch when released from the pitcher's hand (MPH)                                                         |
+|    end\_speed    | velocity of the pitch when it crosses home plate (MPH) - Number commonly read on radar guns                                       |
+|      sz\_top     | top-most height of the strikezone in feet for the given batter (measured from ground)                                             |
+|      sz\_bot     | bottom-most height of the strikezone in feet for the given batter (measured from ground)                                          |
+|      pfx\_x      | horizontal movement of the pitch in inches                                                                                        |
+|      pfx\_z      | vertical movement of the pitch in inches                                                                                          |
 |        px       | horizontal distance of the pitch from the center of the plate in inches                                                           |
 |        pz       | vertical distance of the pitch from the center of the plate in inches                                                             |
 |        x0       | vertical distance from the center of the plate, in feet, where the pitch was released                                             |
@@ -473,17 +497,87 @@ _Here are the definitions of each column header, and a short description_:
 |        ax       | the acceleration of the pitch in the x direction, in feet per second per second                                                   |
 |        ay       | the acceleration of the pitch in the y direction, in feet per second per second                                                   |
 |        az       | the acceleration of the pitch in the z direction, in feet per second per second                                                   |
-|     break_y     | the distance, in feet, from home plate where pitch achieved its greatest deviation from a straight line                           |
-|   break_angle   | the angle, in degrees, from a direct vertical line to the location of the pitch when it crossed home plate                        |
-|   break_length  | the distance, in inches, of the deviation of a straight line from the release point to the front of home plate to the actual path |
-|    pitch_type   | what type the pitch has been classified as (determined by MLB AM algorithm)                                                       |
-| type_confidence | how confident the algorithm was in determining pitch_type (0-1)                                                                   |
+|     break\_y     | the distance, in feet, from home plate where pitch achieved its greatest deviation from a straight line                           |
+|   break\_angle   | the angle, in degrees, from a direct vertical line to the location of the pitch when it crossed home plate                        |
+|   break\_length  | the distance, in inches, of the deviation of a straight line from the release point to the front of home plate to the actual path |
+|    pitch\_type   | what type the pitch has been classified as (determined by MLB AM algorithm)                                                       |
+| type\_confidence | how confident the algorithm was in determining pitch_type (0-1)                                                                   |
 |       zone      | which bucketed location the pitch fell into (e.g. within strike zone up and in, outside of zone low and out, etc.)                |
 |      nasty      | how difficult this particular pitch was to hit (0-100)                                                                            |
-|     spin_dir    | the direction of the spin on the ball                                                                                             |
-|    spin_rate    | the rate of the spin of the pitch, in rpm (rotations per minute)                                                                  |
-|      on_2b      | playerID of the runner on second base, if there is one present                                                                    |
-|      on_1b      | playerID of the runner on first base, if there is one present                                                                     |
-|      on_3b      | playerID of the runner on third base, if there is one present                                                                     |
+|     spin\_dir    | the direction of the spin on the ball                                                                                             |
+|    spin\_rate    | the rate of the spin of the pitch, in rpm (rotations per minute)                                                                  |
+|      on\_2b      | playerID of the runner on second base, if there is one present                                                                    |
+|      on\_1b      | playerID of the runner on first base, if there is one present                                                                     |
+|      on\_3b      | playerID of the runner on third base, if there is one present                                                                     |
 |      count      | the count (<# of balls> - <# of strikes>) of the at bat prior to the pitch being thrown                                           |
 |       date      | the current date (YYYY_MM_DD)                                                                                                     |
+
+
+---
+
+### Step 5: Final Notebook
+
+
+![final_notebook_01](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_01.png?raw=true)
+
+
+![final_notebook_02](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_02.png?raw=true)
+
+
+![final_notebook_03](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_03.png?raw=true)
+
+
+![final_notebook_04](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_04.png?raw=true)
+
+
+![final_notebook_05](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_05.png?raw=true)
+
+
+![final_notebook_06](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_06.png?raw=true)
+
+
+![final_notebook_07](https://github.com/tddavid89/w205_FinalProject_TimDavid/blob/master/Images/final_notebook_07.png?raw=true)
+
+
+---
+
+### **Future Work**:
+Once this solution is built, the only thing that needs to be done going forward for use is to add new partitions.
+
+Ideally, there would be a daily run that would consist of kicking off an Rscript and then loading a partition to hive:
+
+```
+# Run R Script
+Rscript pitchRx_main.R "<year>_<month>_<day>"
+
+# Switch to user w205:
+su - w205
+
+# Make partition folder in hdfs for given day:
+hdfs dfs -mkdir /user/w205/w205final/date=2015_04_05
+
+# Move w205_test.csv to partition folder in hdfs:
+hdfs dfs -put /data/w205_test.csv /user/w205/w205final/date=2015_04_05
+
+# Add new partition to Hive
+hive -e "ALTER TABLE gameday_base_table ADD PARTITION(date='2015_04_05');"
+```
+
+And then when the user would like to analyze data, all they would have to do is dump the Hive table to the local folder and start Zeppelin:
+
+```
+# USING HIVE, DUMP HIVE TABLE TO TSV/CSV
+hive -e "select * from gameday_base_table" > /data/csvDump/temp.csv
+
+# START ZEPPELIN
+/data/incubator-zeppelin-rinterpreter/bin/zeppelin-daemon.sh start
+
+# START HIVE SERVER
+hive --service hiveserver2
+```
+
+---
+
+### **Limitations**:
+
+While this solution works well, it could be better. I have only tested this method with one season's worth of data, but I need a better solution for scaling. I have explored using sqoop to transfer data directly from my Hive table to Postgres. This may be a better long term solution.
